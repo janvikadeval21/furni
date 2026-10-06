@@ -1,0 +1,117 @@
+{% extends "main.html" %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+<!-- HERO SECTION -->
+<section class="orders-hero">
+    <div class="container">
+        <div class="orders-hero-content">
+            <span class="orders-eyebrow">ACCOUNT DASHBOARD</span>
+            <h1>My Orders</h1>
+            <div class="orders-divider"></div>
+            <p>Track your active shipments, view previous purchases, and download official invoices.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ORDERS CONTENT SECTION -->
+<section class="orders-section">
+    <div class="container">
+
+        {% if orders %}
+            {% for order in orders %}
+            <div class="order-card">
+                
+                <!-- CARD HEADER META -->
+                <div class="order-header">
+                    <div class="order-header-meta">
+                        <div class="order-meta-col">
+                            <span>Placed On</span>
+                            <strong>{{ order.created_at|date:"d M Y" }}</strong>
+                        </div>
+
+                        <div class="order-meta-col">
+                            <span>Order Number</span>
+                            <strong>#{{ order.id }}</strong>
+                        </div>
+
+                        <div class="order-meta-col">
+                            <span>Total Amount</span>
+                            <strong class="order-total-price">₹{{ order.total }}</strong>
+                        </div>
+                    </div>
+
+                    <!-- STATUS BADGE (Uses order_status attribute) -->
+                    <div>
+                        {% if order.order_status == 'Delivered' %}
+                            <span class="badge-status badge-delivered">
+                                <i class="fa-solid fa-check"></i> Delivered
+                            </span>
+                        {% elif order.order_status == 'Shipped' %}
+                            <span class="badge-status badge-shipped">
+                                <i class="fa-solid fa-truck"></i> Shipped
+                            </span>
+                        {% elif order.order_status == 'Processing' %}
+                            <span class="badge-status badge-processing">
+                                <i class="fa-solid fa-clock"></i> Processing
+                            </span>
+                        {% elif order.order_status == 'Cancelled' %}
+                            <span class="badge-status badge-cancelled">
+                                <i class="fa-solid fa-xmark"></i> Cancelled
+                            </span>
+                        {% else %}
+                            <span class="badge-status badge-confirmed">
+                                <i class="fa-solid fa-circle-check"></i> {{ order.order_status|default:"Confirmed" }}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- CARD BODY -->
+                <div class="order-body">
+                    <div class="order-recipient-info">
+                        <h6>Recipient: {{ order.name }}</h6>
+                        <p>{{ order.address }}, {{ order.city }} &bull; Contact: {{ order.phone }}</p>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="order-actions">
+                        <!-- TRACK ORDER BUTTON -->
+                        <a href="{% url 'track_order' %}?order_id={{ order.id }}" class="btn-track">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                            <span>Track Order</span>
+                        </a>
+
+                        <!-- DOWNLOAD INVOICE BUTTON -->
+                        <a href="{% url 'download_invoice' order.id %}" class="btn-invoice">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <span>Download Invoice</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        {% else %}
+            <!-- EMPTY ORDERS STATE -->
+            <div class="empty-orders-card">
+                <div class="empty-orders-icon">
+                    <i class="fa-solid fa-box-open"></i>
+                </div>
+                <h2>No Orders Yet</h2>
+                <p>You haven't placed any furniture orders yet. Discover our collection and bring crafted comfort to your home.</p>
+                <a href="{% url 'category' %}" class="btn-start-shopping">
+                    <span>Explore Furniture</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock content %}

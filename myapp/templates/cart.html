@@ -1,0 +1,735 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<!-- ================= CART HERO ================= -->
+
+<section class="cart-hero">
+
+    <div class="cart-hero-overlay"></div>
+
+    <div class="container">
+
+        <div class="cart-hero-content">
+
+            <span class="cart-hero-label">
+                YOUR SHOPPING BAG
+            </span>
+
+            <h1>
+                Shopping Cart
+            </h1>
+
+            <p>
+                Review your selected furniture and complete your order.
+            </p>
+
+            <div class="cart-breadcrumb">
+                <a href="{% url 'index' %}">Home</a>
+                <span>/</span>
+                <span>Cart</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CART SECTION ================= -->
+
+<div class="cart-section">
+
+    <div class="container">
+
+        {% if cart_items %}
+
+        <!-- ================= CART TOP BAR ================= -->
+
+        <div class="cart-top-bar">
+
+            <div>
+
+                <span class="cart-items-label">
+                    YOUR CART
+                </span>
+
+                <h2>
+                    Selected Products
+                </h2>
+
+            </div>
+
+
+            <!-- CLEAR CART -->
+
+            <form
+                method="POST"
+                action="{% url 'clear_cart' %}"
+                onsubmit="return confirm('Are you sure you want to clear your cart?');"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="clear-cart-btn"
+                >
+                    <i class="fa-solid fa-trash-can"></i>
+                    Clear Cart
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- ================= CART TABLE ================= -->
+
+        <div class="cart-table-wrapper">
+
+            <table class="table cart-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Product</th>
+
+                        <th>Price</th>
+
+                        <th>Quantity</th>
+
+                        <th>Total</th>
+
+                        <th>Remove</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in cart_items %}
+
+                    <tr id="cart-row-{{ item.product.id }}">
+
+                        <!-- PRODUCT -->
+
+                        <td>
+
+                            <div class="cart-product">
+
+                                <div class="cart-image-box">
+
+                                    {% if item.product.image %}
+
+                                    <img
+                                        src="{{ item.product.image.url }}"
+                                        alt="{{ item.product.name }}"
+                                        class="cart-product-image"
+                                    >
+
+                                    {% else %}
+
+                                    <img
+                                        src="{% static 'images/product-1.png' %}"
+                                        alt="{{ item.product.name }}"
+                                        class="cart-product-image"
+                                    >
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="cart-product-info">
+
+                                    <h3>
+                                        {{ item.product.name }}
+                                    </h3>
+
+                                    {% if item.product.category %}
+
+                                    <span>
+                                        {{ item.product.category.name }}
+                                    </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- PRICE -->
+
+                        <td>
+
+                            <strong class="cart-price">
+                                ₹{{ item.product.price }}
+                            </strong>
+
+                        </td>
+
+
+                        <!-- QUANTITY -->
+
+                        <td>
+
+                            <div class="cart-quantity">
+
+                                <button
+                                    type="button"
+                                    class="cart-quantity-btn"
+                                    onclick="updateCartQuantity({{ item.product.id }}, -1)"
+                                >
+                                    −
+                                </button>
+
+
+                                <span
+                                    class="cart-quantity-number"
+                                    id="quantity-{{ item.product.id }}"
+                                >
+                                    {{ item.quantity }}
+                                </span>
+
+
+                                <button
+                                    type="button"
+                                    class="cart-quantity-btn"
+                                    onclick="updateCartQuantity({{ item.product.id }}, 1)"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- TOTAL -->
+
+                        <td>
+
+                            <strong
+                                class="cart-item-total"
+                                id="item-total-{{ item.product.id }}"
+                            >
+                                ₹{{ item.total }}
+                            </strong>
+
+                        </td>
+
+
+                        <!-- REMOVE -->
+
+                        <td>
+
+                            <form
+                                method="POST"
+                                action="{% url 'remove_from_cart' item.product.id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="cart-remove-btn"
+                                    title="Remove Product"
+                                >
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ================= LOWER SECTION ================= -->
+
+        <div class="row cart-bottom-section">
+
+
+            <!-- LEFT SIDE -->
+
+            <div class="col-lg-6 mb-4">
+
+                <!-- COUPON -->
+
+                <div class="coupon-box">
+
+                    <div class="coupon-icon">
+                        <i class="fa-solid fa-ticket"></i>
+                    </div>
+
+                    <div class="coupon-content">
+
+                        <h3>
+                            Have a Coupon?
+                        </h3>
+
+                        <p>
+                            Apply your coupon code and save on your order.
+                        </p>
+
+
+                        {% if coupon_code %}
+
+                        <div class="applied-coupon">
+
+                            <div>
+
+                                <span>
+                                    Applied Coupon
+                                </span>
+
+                                <strong>
+                                    {{ coupon_code }}
+                                </strong>
+
+                            </div>
+
+
+                            <form
+                                method="POST"
+                                action="{% url 'remove_coupon' %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="remove-coupon-btn"
+                                >
+                                    Remove
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        {% else %}
+
+                        <form
+                            method="POST"
+                            {% comment %} action="{% url 'apply_coupon' %}" {% endcomment %}
+                            class="coupon-form"
+                        >
+
+                            {% csrf_token %}
+
+                            <input
+                                type="text"
+                                name="coupon_code"
+                                placeholder="Enter coupon code"
+                                required
+                            >
+
+                            <button
+                                type="submit"
+                            >
+                                Apply Coupon
+                            </button>
+
+                        </form>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONTINUE SHOPPING -->
+
+                <div class="continue-shopping-box">
+
+                    <div>
+
+                        <span>
+                            WANT TO ADD MORE?
+                        </span>
+
+                        <h3>
+                            Continue Shopping
+                        </h3>
+
+                    </div>
+
+                    <a
+                        href="{% url 'category' %}"
+                        class="continue-shopping-btn"
+                    >
+                        Shop Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE -->
+
+            <div class="col-lg-6 mb-4">
+
+                <div class="cart-total-box">
+
+                    <div class="cart-total-heading">
+
+                        <div>
+
+                            <span>
+                                ORDER SUMMARY
+                            </span>
+
+                            <h2>
+                                Cart Totals
+                            </h2>
+
+                        </div>
+
+                        <i class="fa-solid fa-receipt"></i>
+
+                    </div>
+
+
+                    <!-- SUBTOTAL -->
+
+                    <div class="cart-total-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong id="cart-subtotal">
+                            ₹{{ subtotal }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- DISCOUNT -->
+
+                    <div
+                        class="cart-total-row discount-row"
+                        id="discount-row"
+                        {% if not discount %}
+                        style="display:none;"
+                        {% endif %}
+                    >
+
+                        <span>
+                            Coupon Discount
+                        </span>
+
+                        <strong id="cart-discount">
+                            - ₹{{ discount }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- SHIPPING -->
+
+                    <div class="cart-total-row">
+
+                        <span>
+                            Shipping
+                        </span>
+
+                        <strong class="free-shipping">
+                            FREE
+                        </strong>
+
+                    </div>
+
+
+                    <!-- GRAND TOTAL -->
+
+                    <div class="cart-grand-row">
+
+                        <span>
+                            Grand Total
+                        </span>
+
+                        <strong
+                            id="cart-total"
+                            class="cart-grand-total"
+                        >
+                            ₹{{ total }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- CHECKOUT -->
+
+                    <a
+                        href="{% url 'checkout' %}"
+                        class="checkout-btn"
+                    >
+
+                        Proceed To Checkout
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+
+                    <div class="secure-checkout">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Secure & Safe Checkout
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+        <!-- ================= EMPTY CART ================= -->
+
+        <div class="empty-cart">
+
+            <div class="empty-cart-icon">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+            </div>
+
+            <span>
+                YOUR CART IS EMPTY
+            </span>
+
+            <h2>
+                Nothing here yet!
+            </h2>
+
+            <p>
+                Discover beautiful furniture and transform your home.
+            </p>
+
+            <a
+                href="{% url 'category' %}"
+                class="empty-cart-btn"
+            >
+                Start Shopping
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- ================= CART JAVASCRIPT ================= -->
+
+<script>
+
+function updateCartQuantity(productId, change) {
+
+    const quantityElement =
+        document.getElementById("quantity-" + productId);
+
+    if (!quantityElement) {
+        return;
+    }
+
+
+    let currentQuantity =
+        parseInt(quantityElement.innerText) || 1;
+
+
+    let newQuantity =
+        currentQuantity + change;
+
+
+    if (newQuantity < 1) {
+        newQuantity = 1;
+    }
+
+
+    const formData = new FormData();
+
+    formData.append("product_id", productId);
+    formData.append("quantity", newQuantity);
+
+
+    const csrfToken =
+        document.querySelector('[name=csrfmiddlewaretoken]');
+
+
+    if (!csrfToken) {
+        console.error("CSRF token not found.");
+        return;
+    }
+
+
+    fetch("{% url 'update_cart_quantity' %}", {
+
+        method: "POST",
+
+        headers: {
+            "X-CSRFToken": csrfToken.value
+        },
+
+        body: formData
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        if (data.success) {
+
+            /* Quantity */
+
+            quantityElement.innerText =
+                data.quantity;
+
+
+            /* Item Total */
+
+            const itemTotal =
+                document.getElementById(
+                    "item-total-" + productId
+                );
+
+            if (itemTotal) {
+
+                itemTotal.innerText =
+                    "₹" + data.item_total;
+
+            }
+
+
+            /* Subtotal */
+
+            const subtotal =
+                document.getElementById(
+                    "cart-subtotal"
+                );
+
+            if (subtotal) {
+
+                subtotal.innerText =
+                    "₹" + data.cart_subtotal;
+
+            }
+
+
+            /* Discount */
+
+            const discountRow =
+                document.getElementById(
+                    "discount-row"
+                );
+
+            const discount =
+                document.getElementById(
+                    "cart-discount"
+                );
+
+            if (data.discount > 0) {
+
+                discountRow.style.display = "flex";
+
+                discount.innerText =
+                    "- ₹" + data.discount;
+
+            }
+            else {
+
+                discountRow.style.display = "none";
+
+            }
+
+
+            /* Grand Total */
+
+            const total =
+                document.getElementById(
+                    "cart-total"
+                );
+
+            if (total) {
+
+                total.innerText =
+                    "₹" + data.cart_total;
+
+            }
+
+
+            /* Navbar Cart Count */
+
+            const cartCount =
+                document.querySelector(".cart-count");
+
+            if (cartCount) {
+
+                cartCount.innerText =
+                    data.cart_quantity;
+
+            }
+
+        }
+
+        else {
+
+            alert(
+                data.message ||
+                "Unable to update cart."
+            );
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Cart update error:",
+            error
+        );
+
+    });
+
+}
+
+</script>
+
+{% endblock content %}

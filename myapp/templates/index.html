@@ -1,0 +1,246 @@
+{% extends "main.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Modern Interior <span class="d-block">Design Studio</span></h1>
+                    <p class="mb-4">Explore curated furniture collections crafted for modern spaces, designed to bring long-lasting comfort, elegance, and warmth into every corner of your home.</p>
+                    <p>
+                        <a href="{% url 'category' %}" class="btn btn-secondary me-2">Shop Now</a>
+                        <a href="{% url 'about' %}" class="btn btn-white-outline">Explore</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="hero-img-wrap" style="transform: translateY(-80px); pointer-events: none;">
+                    <img src="{% static 'images/couch.png' %}" class="img-fluid" alt="Furniture Couch">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-6">
+                <h2 class="section-title">Why Choose Us</h2>
+                <p>We blend timeless aesthetics with premium craftsmanship to furnish your living spaces effortlessly.</p>
+
+                <div class="row my-5">
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="{% static 'images/truck.svg' %}" alt="Fast Shipping" class="imf-fluid">
+                            </div>
+                            <h3>Fast &amp; Free Shipping</h3>
+                            <p>Prompt, tracked doorstep delivery across all standard and custom furniture orders.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="{% static 'images/bag.svg' %}" alt="Easy Shopping" class="imf-fluid">
+                            </div>
+                            <h3>Easy to Shop</h3>
+                            <p>Intuitive category filtering, dimension breakdowns, and smooth checkout.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="{% static 'images/support.svg' %}" alt="24/7 Support" class="imf-fluid">
+                            </div>
+                            <h3>24/7 Support</h3>
+                            <p>Our dedicated customer support team is on standby to assist with every inquiry.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="{% static 'images/return.svg' %}" alt="Easy Returns" class="imf-fluid">
+                            </div>
+                            <h3>Hassle Free Returns</h3>
+                            <p>Straightforward return and exchange policies if the piece isn't the perfect fit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="img-wrap">
+                    <img src="{% static 'images/why-choose-us-img.jpg' %}" alt="Why Choose Us" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Why Choose Us Section -->
+
+<!-- Start We Help Section -->
+<div class="we-help-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <div class="imgs-grid">
+                    <div class="grid grid-1"><img src="{% static 'images/img-grid-1.jpg' %}" alt="Interior Grid 1"></div>
+                    <div class="grid grid-2"><img src="{% static 'images/img-grid-2.jpg' %}" alt="Interior Grid 2"></div>
+                    <div class="grid grid-3"><img src="{% static 'images/img-grid-3.jpg' %}" alt="Interior Grid 3"></div>
+                </div>
+            </div>
+            <div class="col-lg-5 ps-lg-5">
+                <h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
+                <p>From cozy apartment layouts to expansive living suites, our design experts curate functional styling palettes that turn everyday rooms into inspiring sanctuaries.</p>
+
+                <ul class="list-unstyled custom-list my-4">
+                    <li>Sustainably sourced seasoned hardwood frames</li>
+                    <li>Ergonomically engineered for posture and lasting comfort</li>
+                    <li>Tailored fabric palettes &amp; scratch-resistant finishes</li>
+                    <li>Complimentary room configuration &amp; placement advice</li>
+                </ul>
+                <p><a href="{% url 'services' %}" class="btn">Explore Services</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End We Help Section -->
+
+<!-- Start Dynamic Testimonial Section (No Photos, Star Rating Added) -->
+<div class="testimonial-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto text-center">
+                <h2 class="section-title">Testimonials</h2>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="testimonial-slider-wrap text-center">
+
+                    <div id="testimonial-nav">
+                        <span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
+                        <span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
+                    </div>
+
+                    <div class="testimonial-slider">
+                        {% for item in testimonials %}
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+
+                                         <!-- Gold Star Rating -->
+                                            <div class="mb-3 text-warning" style="font-size: 18px; letter-spacing: 2px;">
+                                                {% for i in "12345" %}
+                                                    {% if forloop.counter <= item.rating %}
+                                                        <i class="fa-solid fa-star"></i>
+                                                    {% else %}
+                                                        <i class="fa-regular fa-star text-muted" style="opacity: 0.4;"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <span class="ms-1 text-dark fw-bold" style="font-size: 14px;"></span>
+                                            </div>
+
+                                            <!-- Review Message -->
+                                            <blockquote class="mb-5">
+                                                <p>&ldquo;{{ item.content }}&rdquo;</p>
+                                            </blockquote>
+
+                                            <!-- Author Info -->
+                                            <div class="author-info">
+                                                <h3 class="font-weight-bold mb-1" style="font-size: 18px; color: #2f2f2f;">{{ item.name }}</h3>
+                                                {% if item.designation %}
+                                                    <span class="position d-block mb-3 text-muted" style="font-size: 14px;">{{ item.designation }}</span>
+                                                {% endif %}
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <p class="text-muted">No testimonials available at this moment.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Dynamic Testimonial Section -->
+
+<!-- Start Dynamic Recent Blog Section (Shows Latest 3 Blogs) -->
+<div class="blog-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h2 class="section-title">Recent Blog</h2>
+            </div>
+            <div class="col-md-6 text-start text-md-end">
+                <a href="{% url 'blog' %}" class="more">View All Posts &rarr;</a>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for blog in recent_blogs %}
+            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                <div class="post-entry">
+
+                    <!-- First Image Thumbnail -->
+                    {% with first_image=blog.images.all|first %}
+                        {% if first_image %}
+                        <a href="{% url 'blog_detail' blog.id %}" class="post-thumbnail">
+                            <img src="{{ first_image.image.url }}" alt="{{ blog.title }}" class="img-fluid" style="height: 240px; width: 100%; object-fit: cover; border-radius: 8px;">
+                        </a>
+                        {% else %}
+                        <a href="{% url 'blog_detail' blog.id %}" class="post-thumbnail">
+                            <img src="{% static 'images/post-1.jpg' %}" alt="{{ blog.title }}" class="img-fluid" style="height: 240px; width: 100%; object-fit: cover; border-radius: 8px;">
+                        </a>
+                        {% endif %}
+                    {% endwith %}
+
+                    <div class="post-content-entry pt-3">
+                        <h3>
+                            <a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a>
+                        </h3>
+                        <div class="meta">
+                            <span>by <a href="#">{{ blog.author|default:"Furni Editorial" }}</a></span>
+                            <span>on <a href="#">{{ blog.created_at|date:"M d, Y" }}</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-4">
+                <p class="text-muted">No blog posts published yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+	<br>
+	<br>
+	<br>
+	
+</div>
+<!-- End Dynamic Recent Blog Section -->
+
+{% endblock content %}

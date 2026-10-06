@@ -1,0 +1,122 @@
+{% load static %}
+
+<div class="product-popup-box">
+
+    <!-- Close Button -->
+    <button type="button"
+            class="product-popup-close"
+            onclick="closeProductPopup()">
+        ×
+    </button>
+
+    <div class="product-popup-content">
+
+        <!-- Product Image -->
+        <div class="product-popup-image">
+
+            {% if product.image %}
+                <img src="{{ product.image.url }}"
+                     alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'images/product-1.png' %}"
+                     alt="{{ product.name }}">
+            {% endif %}
+
+        </div>
+
+
+        <!-- Product Information -->
+        <div class="product-popup-info">
+
+            <!-- Product Name -->
+            <h1 class="product-popup-title">
+                {{ product.name }}
+            </h1>
+
+
+            <!-- Price -->
+            <strong class="product-popup-price">
+                ₹{{ product.price }}
+            </strong>
+
+
+            <!-- Description -->
+            <p class="product-popup-description">
+                {{ product.description }}
+            </p>
+
+
+            {% if product.stock > 0 %}
+
+                <!-- Stock -->
+                <p class="product-popup-stock">
+                    <strong>In Stock:</strong>
+                    {{ product.stock }} available
+                </p>
+
+
+                <!-- Add To Cart Form -->
+                <form method="POST"
+                      action="{% url 'add_to_cart' %}">
+
+                    {% csrf_token %}
+
+                    <!-- Product ID -->
+                    <input type="hidden"
+                           name="product_id"
+                           value="{{ product.id }}">
+
+
+                    <!-- Quantity -->
+                    <div class="product-popup-quantity">
+
+                        <!-- Minus -->
+                        <button type="button"
+                                class="quantity-btn"
+                                onclick="changeProductQuantity(-1)">
+                            −
+                        </button>
+
+
+                        <!-- Quantity Input -->
+                        <input type="number"
+                               id="productQuantity"
+                               name="quantity"
+                               value="1"
+                               min="1"
+                               max="{{ product.stock }}"
+                               oninput="validateProductQuantity(this, {{ product.stock }})">
+
+
+                        <!-- Plus -->
+                        <button type="button"
+                                class="quantity-btn"
+                                onclick="changeProductQuantity(1)">
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <!-- Add To Cart -->
+                    <button type="submit"
+                            class="product-popup-cart-btn">
+                        Add to Cart
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <!-- Out Of Stock -->
+                <p class="product-popup-out-stock">
+                    <strong>Out of Stock</strong>
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>

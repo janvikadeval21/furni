@@ -1,0 +1,236 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="profile-page py-5">
+    <div class="container">
+        <div class="profile-card shadow-sm p-4 p-md-5 bg-white rounded-3">
+
+            <!-- =================================================
+                 PROFILE HEADER
+            ================================================= -->
+            <div class="profile-header d-flex align-items-center mb-4 pb-4 border-bottom">
+                <div class="profile-avatar text-white rounded-circle d-flex align-items-center justify-content-center me-4"
+                     style="width: 75px; height: 75px; font-size: 28px; font-weight: bold; background-color: #3b5d50 !important;">
+                    {{ user.username|first|upper }}
+                </div>
+                <div>
+                    <span class="profile-label text-uppercase text-muted fw-bold" style="font-size: 12px; letter-spacing: 1px;">
+                        MY ACCOUNT
+                    </span>
+                    <h1 class="h3 mb-1" style="color: #2f2f2f;">
+                        {{ user.get_full_name|default:user.username }}
+                    </h1>
+                    <p class="text-muted mb-0">
+                        Welcome to your personal profile
+                    </p>
+                </div>
+            </div>
+
+            <!-- =================================================
+                 USER DETAILS
+            ================================================= -->
+            <div class="profile-details mb-5">
+                <h2 class="h5 mb-4" style="color: #3b5d50; font-weight: 600;">
+                    Personal Information
+                </h2>
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <span class="d-block text-muted small">Username</span>
+                            <strong class="text-dark">{{ user.username }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <span class="d-block text-muted small">Email Address</span>
+                            <strong class="text-dark">{{ user.email|default:"Not provided" }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <span class="d-block text-muted small">Member Since</span>
+                            <strong class="text-dark">{{ user.date_joined|date:"d M Y" }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <span class="d-block text-muted small">Last Login</span>
+                            <strong class="text-dark">{{ user.last_login|date:"d M Y, h:i A"|default:"First Session" }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =================================================
+                 SHARE EXPERIENCE (TESTIMONIAL FORM)
+            ================================================= -->
+            <div class="profile-testimonial mb-5 p-4 rounded bg-light border">
+                <h2 class="h5 mb-2" style="color: #3b5d50; font-weight: 600;">
+                    Share Your Experience
+                </h2>
+                <p class="text-muted mb-4 small">
+                    Tell us about your experience with Furni furniture, designs, and services.
+                </p>
+
+                <!-- MESSAGES -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" action="{% url 'add_testimonial' %}">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <!-- 1. NAME FIELD -->
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label fw-bold small text-secondary">
+                                Your Name <span class="text-danger">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="name" 
+                                id="name" 
+                                class="form-control" 
+                                value="{{ user.get_full_name|default:user.username }}" 
+                                placeholder="Enter your full name" 
+                                required>
+                        </div>
+
+                        <!-- 2. DESIGNATION / ROLE -->
+                        <div class="col-md-6 mb-3">
+                            <label for="designation" class="form-label fw-bold small text-secondary">
+                                Role / Designation (Optional)
+                            </label>
+                            <input 
+                                type="text" 
+                                name="designation" 
+                                id="designation" 
+                                class="form-control" 
+                                placeholder="e.g. Interior Designer / Homeowner / Architect">
+                        </div>
+                    </div>
+
+                    <!-- 3. CONTENT / REVIEW TEXT -->
+                    <div class="mb-3">
+                        <label for="content" class="form-label fw-bold small text-secondary">
+                            Your Review / Experience <span class="text-danger">*</span>
+                        </label>
+                        <textarea
+                            name="content"
+                            id="content"
+                            rows="4"
+                            class="form-control"
+                            placeholder="Share your experience about product quality, comfort, styling, or delivery..."
+                            required></textarea>
+                    </div>
+
+                                    <!-- RATING (STAR RATING SELECTION) -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-secondary d-block">
+                            Your Rating <span class="text-danger">*</span>
+                        </label>
+                        
+                        <div class="star-rating-box">
+                            <input type="radio" name="rating" value="5" id="star5" required>
+                            <label for="star5" title="5 stars">&#9733;</label>
+
+                            <input type="radio" name="rating" value="4" id="star4">
+                            <label for="star4" title="4 stars">&#9733;</label>
+
+                            <input type="radio" name="rating" value="3" id="star3">
+                            <label for="star3" title="3 stars">&#9733;</label>
+
+                            <input type="radio" name="rating" value="2" id="star2">
+                            <label for="star2" title="2 stars">&#9733;</label>
+
+                            <input type="radio" name="rating" value="1" id="star1">
+                            <label for="star1" title="1 star">&#9733;</label>
+                        </div>
+                        
+                        <small class="text-muted d-block mt-1">Click on a star to select your rating (1 to 5).</small>
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" class="btn btn-primary px-4 py-2" style="background-color: #3b5d50; border-color: #3b5d50;">
+                        Submit Testimonial
+                    </button>
+                </form>
+            </div>
+
+            <!-- =================================================
+                 MY PREVIOUS TESTIMONIALS
+            ================================================= -->
+            {% if testimonials %}
+            <div class="my-testimonials mb-4">
+                <h2 class="h5 mb-3" style="color: #3b5d50; font-weight: 600;">
+                    My Submitted Reviews
+                </h2>
+
+                <div class="row g-3">
+                    {% for item in testimonials %}
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white border rounded shadow-sm h-100">
+                            
+                            <!-- STARS -->
+                            <div class="text-warning mb-2" style="letter-spacing: 2px;">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= item.rating %}
+                                        <span>&#9733;</span>
+                                    {% else %}
+                                        <span class="text-muted opacity-25">&#9733;</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <!-- REVIEW CONTENT -->
+                            <p class="mb-2 text-secondary" style="font-size: 14px; font-style: italic;">
+                                &ldquo;{{ item.content }}&rdquo;
+                            </p>
+
+                            <!-- AUTHOR & DATE -->
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                                <span class="fw-bold text-dark" style="font-size: 13px;">
+                                    {{ item.name }} 
+                                    {% if item.designation %}
+                                        <small class="text-muted fw-normal">({{ item.designation }})</small>
+                                    {% endif %}
+                                </span>
+                                <span class="text-muted" style="font-size: 11px;">
+                                    {{ item.created_at|date:"d M Y" }}
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- =================================================
+                 ACTIONS
+            ================================================= -->
+            <div class="profile-actions pt-3 border-top d-flex justify-content-between align-items-center">
+                <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+                    &larr; Back to Home
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-danger">
+                    Logout
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

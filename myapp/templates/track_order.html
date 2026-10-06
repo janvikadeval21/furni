@@ -1,0 +1,129 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block title %}Track Order | Furni{% endblock %}
+
+{% block content %}
+
+
+<!-- HERO -->
+<section class="track-hero">
+    <div class="container">
+        <h1>Track Your Shipment</h1>
+        <p>Real-time delivery updates for your Furni home furniture</p>
+    </div>
+</section>
+
+<div class="container pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- SEARCH / LOOKUP FORM -->
+            <div class="track-search-card mb-4">
+                <form method="GET" action="{% url 'track_order' %}">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-5">
+                            <label for="order_id">Order Number</label>
+                            <input 
+                                type="text" 
+                                name="order_id" 
+                                id="order_id" 
+                                class="form-control" 
+                                placeholder="e.g. 17" 
+                                value="{{ query_order_id|default:'' }}" 
+                                required>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="email">Billing Email</label>
+                            <input 
+                                type="email" 
+                                name="email" 
+                                id="email" 
+                                class="form-control" 
+                                placeholder="name@example.com" 
+                                value="{{ query_email|default:'' }}" 
+                                required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn track-btn w-100">Track</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- MESSAGES / ALERTS -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- TRACKING RESULT -->
+            {% if order %}
+            <div class="order-summary-box mb-4">
+                <div class="d-flex justify-content-between align-items-center pb-3 border-bottom mb-3 flex-wrap gap-2">
+                    <div>
+                        <h4 class="mb-1 text-dark fw-bold">Order #{{ order.id }}</h4>
+                        <span class="text-muted small">Placed on {{ order.created_at|date:"d M Y, h:i A" }}</span>
+                                    </div>
+                {% if order.order_status == 'Cancelled' %}
+                    <span class="order-badge-pill bg-danger text-white">Order Cancelled</span>
+                {% elif order.order_status == 'Delivered' %}
+                    <span class="order-badge-pill bg-success text-white">Delivered</span>
+                {% else %}
+                    <span class="order-badge-pill bg-primary text-white" style="background-color: #3b5d50 !important;">
+                        {{ order.order_status }}
+                    </span>
+                {% endif %}
+                                </div>
+
+                {% if order.status != 'Cancelled' %}
+                <!-- STEPPER PROGRESS BAR -->
+                <div class="stepper-wrapper">
+                    {% for step in steps %}
+                        <div class="stepper-item 
+                            {% if forloop.counter0 < current_step_index %}completed
+                            {% elif forloop.counter0 == current_step_index %}active
+                            {% endif %}">
+                            <div class="step-counter">
+                                {% if forloop.counter0 < current_step_index %}
+                                    <i class="fa fa-check"></i>
+                                {% else %}
+                                    {{ forloop.counter }}
+                                {% endif %}
+                            </div>
+                            <div class="step-name">{{ step }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-danger my-4">
+                    This order has been cancelled. If you believe this is an error, please reach out via our contact support page.
+                </div>
+                {% endif %}
+
+                <!-- SHIPPING & ORDER SUMMARY -->
+                <div class="row pt-3 border-top g-3">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-secondary text-uppercase small">Delivery Address</h6>
+                        <p class="mb-1 text-dark fw-semibold">{{ order.name }}</p>
+                        <p class="mb-0 text-muted small">{{ order.address }}, {{ order.city }}</p>
+                        <p class="mb-0 text-muted small">Phone: {{ order.phone }}</p>
+                    </div>
+
+                    <div class="col-md-6 text-md-end">
+                        <h6 class="fw-bold text-secondary text-uppercase small">Payment Summary</h6>
+                        <p class="mb-1 text-muted small">Amount Payable:</p>
+                        <h4 class="text-success fw-bold">₹{{ order.total }}</h4>
+                    </div>
+                </div>
+
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

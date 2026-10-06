@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Furni Order Status Update</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
+    </style>
+    <![endif]-->
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4efe9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+
+    <!-- EMAIL CONTAINER TABLE -->
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4efe9; padding: 30px 15px;">
+        <tr>
+            <td align="center">
+                
+                <!-- MAIN CARD WRAPPER -->
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 580px; background-color: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(47, 36, 31, 0.08); border: 1px solid #e7dfd5;">
+                    
+                    <!-- BRAND HEADER -->
+                    <tr>
+                        <td align="center" style="background: linear-gradient(135deg, #3b5d50 0%, #294239 100%); padding: 36px 20px 32px 20px;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 700; letter-spacing: 1px;">Furni<span style="color: #f9bf29;">.</span></h1>
+                            <p style="color: rgba(255, 255, 255, 0.75); margin: 6px 0 0; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">Shipment Notification</p>
+                        </td>
+                    </tr>
+
+                    <!-- MAIN CONTENT -->
+                    <tr>
+                        <td style="padding: 36px 32px 28px 32px;">
+                            
+                            <!-- GREETING -->
+                            <h2 style="color: #27211b; margin: 0 0 12px; font-size: 22px; font-weight: 700;">Hello {{ order.name }},</h2>
+                            <p style="color: #63584e; font-size: 15px; line-height: 1.6; margin: 0 0 24px;">{{ message_body }}</p>
+
+                            <!-- STATUS HIGHLIGHT BOX -->
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #faf7f4; border: 1px solid #ebdcd0; border-left: 5px solid {{ status_color|default:'#3b5d50' }}; border-radius: 8px; margin-bottom: 28px;">
+                                <tr>
+                                    <td style="padding: 16px 20px;">
+                                        <div style="font-size: 11px; color: #8a7a6e; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;">Current Shipment Status</div>
+                                        <div style="color: {{ status_color|default:'#3b5d50' }}; font-size: 20px; font-weight: 800; letter-spacing: -0.2px;">
+                                            {{ order.order_status }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- ORDER SUMMARY CARD -->
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #ffffff; border: 1px solid #ede5dd; border-radius: 8px; overflow: hidden; margin-bottom: 30px;">
+                                <tr>
+                                    <td colspan="2" style="background-color: #fcfbfa; padding: 12px 18px; border-bottom: 1px solid #ede5dd;">
+                                        <span style="font-size: 12px; font-weight: 700; color: #3b5d50; text-transform: uppercase; letter-spacing: 1px;">Order Summary</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 14px 18px; color: #796d63; font-size: 14px; border-bottom: 1px solid #f3ece5;">Order ID:</td>
+                                    <td align="right" style="padding: 14px 18px; color: #27211b; font-size: 14px; font-weight: 700; border-bottom: 1px solid #f3ece5;">#{{ order.id }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 14px 18px; color: #796d63; font-size: 14px; border-bottom: 1px solid #f3ece5;">Total Amount:</td>
+                                    <td align="right" style="padding: 14px 18px; color: #3b5d50; font-size: 16px; font-weight: 800; border-bottom: 1px solid #f3ece5;">₹{{ order.total }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 14px 18px; color: #796d63; font-size: 14px; vertical-align: top;">Delivery Address:</td>
+                                    <td align="right" style="padding: 14px 18px; color: #27211b; font-size: 14px; line-height: 1.4;">
+                                        {{ order.address }}<br>
+                                        <span style="color: #63584e;">{{ order.city }}</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- CALL TO ACTION BUTTON -->
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center">
+                                        <a href="http://127.0.0.1:8000/track_order/?order_id={{ order.id }}&email={{ order.email }}" 
+                                           target="_blank"
+                                           style="display: inline-block; background-color: #3b5d50; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(59, 93, 80, 0.25);">
+                                            Track Shipment Status &rarr;
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <!-- FOOTER -->
+                    <tr>
+                        <td align="center" style="background-color: #faf8f5; padding: 22px 24px; border-top: 1px solid #ede5dd; color: #8a7a6e; font-size: 12px; line-height: 1.6;">
+                            <p style="margin: 0 0 6px;">Thank you for shopping with <strong>Furni. Crafted Living</strong>.</p>
+                            <p style="margin: 0; color: #a3958a;">If you have any questions or require support, simply reply directly to this email.</p>
+                        </td>
+                    </tr>
+
+                </table>
+                <!-- /MAIN CARD WRAPPER -->
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

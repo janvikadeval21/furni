@@ -1,0 +1,476 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Janvi">
+    <meta name="description" content="Furni - Premium Furniture & Interior Design">
+    <meta name="keywords" content="furniture, interior design, furni, shopping">
+
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Tiny Slider -->
+    <link href="{% static 'css/tiny-slider.css' %}" rel="stylesheet">
+
+    <!-- Furni Custom Theme CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Furni Themed ShopBot CSS -->
+    <link href="{% static 'css/shopbot.css' %}" rel="stylesheet">
+
+    <title>Furni</title>
+</head>
+
+<body>
+
+<!-- =========================================================
+     START HEADER / NAVIGATION
+========================================================= -->
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark" aria-label="Furni navigation bar">
+    <div class="container">
+        <!-- LOGO -->
+        <a class="navbar-brand" href="{% url 'index' %}">
+            Furni<span>.</span>
+        </a>
+
+        <!-- MOBILE MENU BUTTON -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- NAVIGATION -->
+        <div class="collapse navbar-collapse" id="navbarsFurni">
+            <!-- MAIN MENU -->
+            <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category' %}">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services' %}">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact us</a>
+                </li>
+            </ul>
+
+            <!-- LOGIN / REGISTER / USER DROPDOWN / CART -->
+            <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5 align-items-center">
+                {% if user.is_authenticated %}
+                    <!-- USER DROPDOWN -->
+                    <li class="nav-item dropdown user-dropdown">
+                        <a class="nav-link dropdown-toggle user-menu" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user"></i>
+                            <span>{{ user.username }}</span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fa-solid fa-user me-2"></i> Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'wishlist' %}">
+                                    <i class="fa-solid fa-heart me-2"></i> Wishlist
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'track_order' %}">
+                                    <i class="fa-solid fa-truck-fast me-2"></i> Track Order
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'myorder' %}">
+                                    <i class="fa-solid fa-box me-2"></i> My Order
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item logout-dropdown">
+                                        <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- CART -->
+                    <li class="nav-item cart-item">
+                        <a class="nav-link cart-link" href="{% url 'cart' %}" title="Shopping Cart">
+                            <div class="cart-icon-wrapper">
+                                <img src="{% static 'images/cart.svg' %}" alt="Cart" width="24">
+                                {% if cart_total_quantity > 0 %}
+                                    <span class="cart-count">{{ cart_total_quantity }}</span>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </li>
+                {% else %}
+                    <!-- LOGIN / REGISTER -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- =========================================================
+     END HEADER / NAVIGATION
+========================================================= -->
+
+<!-- =========================================================
+     PAGE CONTENT
+========================================================= -->
+{% block content %}
+{% endblock content %}
+
+<!-- =========================================================
+     START FOOTER
+========================================================= -->
+<footer class="footer-section">
+    <div class="container relative">
+        <div class="sofa-img">
+            <img src="{% static 'images/sofa.png' %}" alt="Furniture" class="img-fluid">
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="subscription-form">
+                    <h3 class="d-flex align-items-center">
+                        <span class="me-1">
+                            <img src="{% static 'images/envelope-outline.svg' %}" alt="Newsletter" class="img-fluid">
+                        </span>
+                        <span>Subscribe to Newsletter</span>
+                    </h3>
+
+                    <form action="#" class="row g-3">
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="Enter your name">
+                        </div>
+                        <div class="col-auto">
+                            <input type="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">
+                                <span class="fa fa-paper-plane"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap">
+                    <a href="{% url 'index' %}" class="footer-logo">Furni<span>.</span></a>
+                </div>
+                <p class="mb-4">
+                    Discover premium furniture and stylish home decor products designed to make your home beautiful, comfortable and modern.
+                </p>
+
+                <ul class="list-unstyled custom-social">
+                    <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'about' %}">About us</a></li>
+                            <li><a href="{% url 'services' %}">Services</a></li>
+                            <li><a href="{% url 'blog' %}">Blog</a></li>
+                            <li><a href="{% url 'contact' %}">Contact us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Knowledge base</a></li>
+                            <li><a href="#">Live chat</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Jobs</a></li>
+                            <li><a href="#">Our team</a></li>
+                            <li><a href="#">Leadership</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Nordic Chair</a></li>
+                            <li><a href="#">Kruzo Aero</a></li>
+                            <li><a href="#">Ergonomic Chair</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-top copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script>
+                        Furni. All Rights Reserved.
+                    </p>
+                </div>
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- =========================================================
+     END FOOTER
+========================================================= -->
+
+<!-- =========================================================
+     FURNI THEMED SHOPBOT WIDGET
+========================================================= -->
+<button class="shopbot-toggler" id="shopbotToggler" title="Furni ShopBot Assistant">
+    <i class="fa-solid fa-robot"></i>
+</button>
+
+<div class="shopbot-card" id="shopbotCard">
+    <!-- Header -->
+    <div class="shopbot-header">
+        <div class="shopbot-header-left">
+            <div class="shopbot-avatar-header">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="shopbot-header-info">
+                <h4>ShopBot</h4>
+                <div class="shopbot-status">
+                    <span class="shopbot-status-dot"></span> Online &bull; Ready to help
+                </div>
+            </div>
+        </div>
+        <div class="shopbot-header-actions">
+            <button id="shopbotReset" title="Restart Conversation">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+            <button id="shopbotClose" title="Close Chat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="shopbot-messages" id="shopbotMessages">
+        <div class="shopbot-row bot">
+            <div class="shopbot-avatar-small">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="shopbot-bubble">
+                Hi! 👋 I'm <strong>ShopBot</strong> — your personal Furni assistant. What can I help you with today?[cite: 2]
+                
+                <div class="shopbot-pills-list">
+                    <button class="shopbot-pill-btn" onclick="sendAction('shop_category', '🛍️ Shop by Category')">🛍️ Shop by Category</button>[cite: 2]
+                    <button class="shopbot-pill-btn" onclick="sendAction('track_order_prompt', '📦 Track My Order')">📦 Track My Order</button>[cite: 2]
+                    <button class="shopbot-pill-btn" onclick="sendAction('offers_coupons', '🎁 Offers & Coupons')">🎁 Offers & Coupons</button>[cite: 2]
+                    <button class="shopbot-pill-btn" onclick="sendAction('shipping_info', '🚚 Shipping Info')">🚚 Shipping Info</button>[cite: 2]
+                    <button class="shopbot-pill-btn" onclick="sendAction('returns_refunds', '🔄 Returns & Refunds')">🔄 Returns & Refunds</button>[cite: 2]
+                    <button class="shopbot-pill-btn" onclick="sendAction('chat_freely', '💬 Chat Freely')">💬 Chat Freely</button>[cite: 2]
+                </div>
+            </div>
+        </div>
+        <div class="shopbot-time" id="welcomeTime"></div>
+    </div>
+
+    <!-- Bottom Action Bar -->
+    <div class="shopbot-bottom-bar">
+        <button class="shopbot-mainmenu-pill" onclick="sendAction('main_menu', '🏠 Main Menu')">
+            🏠 Main Menu[cite: 2]
+        </button>
+    </div>
+
+    <!-- Input Form -->
+    <form class="shopbot-input-area" id="shopbotForm" onsubmit="handleUserSubmit(event)">
+        <input type="text" id="shopbotInput" placeholder="Type or choose an option above..." autocomplete="off">[cite: 2]
+        <button type="submit" class="shopbot-send-btn">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </form>
+</div>
+
+<!-- =========================================================
+     JAVASCRIPTS
+========================================================= -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/tiny-slider.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+<!-- ShopBot Logic Script -->
+<script>
+    const toggler = document.getElementById('shopbotToggler');
+    const card = document.getElementById('shopbotCard');
+    const closeBtn = document.getElementById('shopbotClose');
+    const resetBtn = document.getElementById('shopbotReset');
+    const msgContainer = document.getElementById('shopbotMessages');
+    const inputEl = document.getElementById('shopbotInput');
+
+    function getCurrentTime() {
+        return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    const welcomeTimeEl = document.getElementById('welcomeTime');
+    if (welcomeTimeEl) welcomeTimeEl.textContent = getCurrentTime();
+
+    // Helper: Safely retrieve CSRF token from document cookies
+    function getCsrfToken() {
+        let cookieValue = '';
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, 10) === 'csrftoken=') {
+                    cookieValue = decodeURIComponent(cookie.substring(10));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Toggle Chat visibility
+    toggler.addEventListener('click', () => {
+        card.classList.toggle('active');
+        if (card.classList.contains('active')) inputEl.focus();
+    });
+
+    closeBtn.addEventListener('click', () => {
+        card.classList.remove('active');
+    });
+
+    // Reset Chat conversation
+    resetBtn.addEventListener('click', () => {
+        sendAction('main_menu', 'Restart Chat');
+    });
+
+    // Pill Button click action
+    function sendAction(value, label) {
+        addUserMessage(label || value);
+        callApi(value);
+    }
+
+    // Form submission
+    function handleUserSubmit(e) {
+        e.preventDefault();
+        const text = inputEl.value.trim();
+        if (!text) return;
+        addUserMessage(text);
+        inputEl.value = '';
+        callApi(text);
+    }
+
+    function addUserMessage(text) {
+        const row = document.createElement('div');
+        row.className = 'shopbot-row user';
+        row.innerHTML = `<div class="shopbot-bubble">${text}</div>`;
+        msgContainer.appendChild(row);
+
+        const time = document.createElement('div');
+        time.className = 'shopbot-time';
+        time.style.textAlign = 'right';
+        time.textContent = getCurrentTime();
+        msgContainer.appendChild(time);
+
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+
+    async function callApi(messageText) {
+        const botRow = document.createElement('div');
+        botRow.className = 'shopbot-row bot';
+        botRow.innerHTML = `
+            <div class="shopbot-avatar-small"><i class="fa-solid fa-robot"></i></div>
+            <div class="shopbot-bubble"><em>Typing...</em></div>
+        `;
+        msgContainer.appendChild(botRow);
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+
+        try {
+            const res = await fetch('/api/chatbot/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                body: JSON.stringify({ message: messageText })
+            });
+
+            if (!res.ok) {
+                throw new Error(`Server returned HTTP ${res.status}`);
+            }
+
+            const data = await res.json();
+
+            let pillsHtml = '';
+            if (data.options && data.options.length > 0) {
+                pillsHtml = '<div class="shopbot-pills-list">';
+                data.options.forEach(opt => {
+                    if (opt.url) {
+                        pillsHtml += `<a href="${opt.url}" class="shopbot-pill-btn">${opt.label}</a>`;
+                    } else {
+                        pillsHtml += `<button type="button" class="shopbot-pill-btn" onclick="sendAction('${opt.value}', '${opt.label}')">${opt.label}</button>`;
+                    }
+                });
+                pillsHtml += '</div>';
+            }
+
+            botRow.querySelector('.shopbot-bubble').innerHTML = data.reply + pillsHtml;
+
+            const time = document.createElement('div');
+            time.className = 'shopbot-time';
+            time.textContent = getCurrentTime();
+            msgContainer.appendChild(time);
+
+        } catch (err) {
+            console.error("Chatbot Fetch Error:", err);
+            botRow.querySelector('.shopbot-bubble').innerHTML = "Unable to connect to the assistant right now. Please try again.";
+        }
+
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+</script>
+
+</body>
+</html>

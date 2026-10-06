@@ -1,0 +1,191 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- =========================================================
+     START HERO SECTION
+========================================================= -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+
+            <!-- LEFT CONTENT -->
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Blog</h1>
+                    <p class="mb-4">
+                        Explore our latest furniture ideas, interior
+                        inspiration, styling tips and helpful guides
+                        to create a beautiful and comfortable home.
+                    </p>
+                    <p>
+                        <a href="{% url 'category' %}" class="btn btn-secondary me-2">
+                            Shop Now
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- RIGHT SOFA -->
+            <div class="col-lg-7">
+                <div class="hero-img-wrap" style="transform: translateY(-80px); pointer-events: none;">
+                    <img src="{% static 'images/couch.png' %}" class="img-fluid" alt="Furniture Sofa">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- =========================================================
+     END HERO SECTION
+========================================================= -->
+
+
+<!-- =========================================================
+     BLOG SECTION
+========================================================= -->
+<div class="blog-section" id="blogs">
+    <div class="container">
+        <div class="row">
+
+            {% for blog in blogs %}
+            <div class="col-12 col-sm-6 col-md-4 mb-5">
+                <div class="post-entry blog-card">
+
+                    <!-- FIRST BLOG IMAGE -->
+                    {% with first_image=blog.images.all|first %}
+                        {% if first_image %}
+                        <a href="{% url 'blog_detail' blog.id %}" class="post-thumbnail">
+                            <img src="{{ first_image.image.url }}" alt="{{ blog.title }}" class="img-fluid">
+                        </a>
+                        {% else %}
+                        <a href="{% url 'blog_detail' blog.id %}" class="post-thumbnail blog-no-image">
+                            <span>No Image</span>
+                        </a>
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- BLOG INFORMATION -->
+                    <div class="post-content-entry">
+
+                        <!-- TITLE -->
+                        <h3>
+                            <a href="{% url 'blog_detail' blog.id %}">
+                                {{ blog.title }}
+                            </a>
+                        </h3>
+
+                        <!-- AUTHOR + DATE -->
+                        <div class="meta">
+                            <span>
+                                by <a href="#">{{ blog.author }}</a>
+                            </span>
+                            <span>
+                                on <a href="#">{{ blog.created_at|date:"M d, Y" }}</a>
+                            </span>
+                        </div>
+
+                        <!-- READ MORE -->
+                        <a href="{% url 'blog_detail' blog.id %}" class="blog-read-more">
+                            Read More <span>&rarr;</span>
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="no-blogs">
+                    <h3>No Blogs Available</h3>
+                    <p>New blogs will be added soon.</p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     DYNAMIC TESTIMONIAL SECTION (No Photos, Star Rating Added)
+========================================================= -->
+<div class="testimonial-section before-footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto text-center">
+                <h2 class="section-title">Testimonials</h2>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="testimonial-slider-wrap text-center">
+
+                    <div id="testimonial-nav">
+                        <span class="prev" data-controls="prev">
+                            <span class="fa fa-chevron-left"></span>
+                        </span>
+                        <span class="next" data-controls="next">
+                            <span class="fa fa-chevron-right"></span>
+                        </span>
+                    </div>
+
+                    <div class="testimonial-slider">
+                        {% for item in testimonials %}
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        
+                                         <!-- Gold Star Rating -->
+                                        <div class="mb-3 text-warning" style="font-size: 18px; letter-spacing: 2px;">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= item.rating %}
+                                                    <i class="fa-solid fa-star"></i>
+                                                {% else %}
+                                                    <i class="fa-regular fa-star text-muted" style="opacity: 0.4;"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <span class="ms-1 text-dark fw-bold" style="font-size: 14px;"></span>
+                                        </div>
+
+                                        <!-- Review Message -->
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;{{ item.content }}&rdquo;</p>
+                                        </blockquote>
+
+                                        <!-- Author Info -->
+                                        <div class="author-info">
+                                            <h3 class="font-weight-bold mb-1" style="font-size: 18px; color: #2f2f2f;">{{ item.name }}</h3>
+                                            {% if item.designation %}
+                                                <span class="position d-block mb-3 text-muted" style="font-size: 14px;">{{ item.designation }}</span>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <p class="text-muted">No testimonials available yet.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

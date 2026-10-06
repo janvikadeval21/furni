@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tax Invoice - Furni</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.2cm 1.5cm;
+        }
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #2b2b2b;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Brand Header */
+        .header-table {
+            width: 100%;
+            border-bottom: 3px solid #3b5d50;
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+
+        .brand-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3b5d50;
+            margin: 0;
+        }
+
+        .brand-title span {
+            color: #f9bf29;
+        }
+
+        .brand-tagline {
+            font-size: 11px;
+            color: #6a6a6a;
+            margin: 3px 0 0 0;
+            text-transform: uppercase;
+        }
+
+        .invoice-badge-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2f2f2f;
+            text-align: right;
+            margin: 0;
+        }
+
+        .invoice-subtitle {
+            font-size: 10px;
+            color: #777777;
+            text-align: right;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Details Section: Bill To & Order Info */
+        .info-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 12px 14px;
+            vertical-align: top;
+        }
+
+        .info-card-title {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #3b5d50;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 4px;
+        }
+
+        .info-line {
+            margin: 3px 0;
+            font-size: 11.5px;
+            color: #333333;
+        }
+
+        .info-line strong {
+            color: #111111;
+        }
+
+        /* Items Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .items-table th {
+            background-color: #3b5d50;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 9px 10px;
+            border: none;
+        }
+
+        .items-table td {
+            padding: 10px 10px;
+            font-size: 11.5px;
+            border-bottom: 1px solid #eef0f2;
+            color: #333333;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Summary Section */
+        .summary-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .notes-box {
+            background-color: #fffdf5;
+            border: 1px solid #f2e3b6;
+            padding: 12px;
+            vertical-align: top;
+            width: 55%;
+        }
+
+        .notes-box strong {
+            color: #7a5c1e;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .notes-box p {
+            margin: 6px 0 0 0;
+            font-size: 10.5px;
+            color: #665c40;
+            line-height: 1.4;
+        }
+
+        .totals-box {
+            width: 40%;
+            vertical-align: top;
+        }
+
+        .totals-inner-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .totals-inner-table td {
+            padding: 6px 8px;
+            font-size: 11.5px;
+        }
+
+        .totals-inner-table .grand-total-row td {
+            background-color: #3b5d50;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 9px 8px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 35px;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 14px;
+            text-align: center;
+            font-size: 10px;
+            color: #777777;
+        }
+
+        .footer-highlight {
+            color: #3b5d50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <table class="header-table">
+        <tr>
+            <td style="width: 55%; vertical-align: bottom;">
+                <div class="brand-title">Furni<span>.</span></div>
+                <div class="brand-tagline">Modern Interior &amp; Furniture Design</div>
+            </td>
+            <td style="width: 45%; vertical-align: bottom;">
+                <div class="invoice-badge-title">TAX INVOICE</div>
+                <div class="invoice-subtitle">Original for Recipient</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Customer & Order Meta Information -->
+    <table class="info-table">
+        <tr>
+            <!-- Customer Details -->
+            <td style="width: 48%; vertical-align: top;">
+                <div class="info-card">
+                    <div class="info-card-title">Billed To (Customer Details)</div>
+                    <div class="info-line">
+                        <strong>Name:</strong> {{ order.user.get_full_name|default:order.user.username }}
+                    </div>
+                    <div class="info-line">
+                        <strong>Email:</strong> {{ order.user.email }}
+                    </div>
+                    <div class="info-line">
+                        <strong>Customer ID:</strong> #CUST-{{ order.user.id }}
+                    </div>
+                </div>
+            </td>
+
+            <td style="width: 4%;"></td>
+
+            <!-- Order Details -->
+            <td style="width: 48%; vertical-align: top;">
+                <div class="info-card">
+                    <div class="info-card-title">Order Information</div>
+                    <div class="info-line">
+                        <strong>Invoice / Order ID:</strong> #{{ order.id }}
+                    </div>
+                    <div class="info-line">
+                        <strong>Order Date:</strong> {{ order.created_at|date:"d M Y, h:i A" }}
+                    </div>
+                    <div class="info-line">
+                        <strong>Payment Method:</strong> {{ order.payment_method }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Line Items Table -->
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th class="text-center" style="width: 8%;">#</th>
+                <th style="width: 47%;">Item Description</th>
+                <th class="text-center" style="width: 15%;">Quantity</th>
+                <th class="text-right" style="width: 15%;">Unit Price</th>
+                <th class="text-right" style="width: 15%;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+            <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td>
+                    <strong>{{ item.product.name }}</strong>
+                </td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-right">₹{{ item.price }}</td>
+                <td class="text-right">₹{{ item.price }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center" style="padding: 16px; color: #888;">No items recorded in this order.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Summary Breakdown -->
+    <table class="summary-table">
+        <tr>
+            <!-- Notes & Terms -->
+            <td class="notes-box">
+                <strong>Thank you for choosing Furni!</strong>
+                <p>
+                    All handcrafted items carry a standard manufacturer warranty against structural defects. For returns, exchanges, or assistance, contact our care team at <strong>support@furni.com</strong>.
+                </p>
+            </td>
+
+            <td style="width: 5%;"></td>
+
+            <!-- Grand Total Box -->
+            <td class="totals-box">
+                <table class="totals-inner-table">
+                    <tr>
+                        <td>Subtotal:</td>
+                        <td class="text-right">₹{{ order.total }}</td>
+                    </tr>
+                    <tr>
+                        <td>Shipping / Delivery:</td>
+                        <td class="text-right" style="color: #28a745; font-weight: bold;">FREE</td>
+                    </tr>
+                    <tr class="grand-total-row">
+                        <td>Grand Total:</td>
+                        <td class="text-right">₹{{ order.total }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Page Footer -->
+    <div class="footer">
+        <p>
+            <span class="footer-highlight">Furni Inc.</span> &bull; 123 Studio Way, Design District, India &bull; Phone: +91 98765 43210 &bull; www.furni.com
+        </p>
+        <p style="margin-top: 4px; color: #999;">
+            This is a computer-generated tax invoice and requires no physical signature.
+        </p>
+    </div>
+
+</body>
+</html>

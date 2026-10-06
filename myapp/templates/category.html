@@ -1,0 +1,105 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+
+            <!-- LEFT CONTENT -->
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+
+                    <span class="category-label">
+                        FURNITURE COLLECTION
+                    </span>
+
+                    <h1>
+                        Find Furniture<br>
+                        That Feels Like Home
+                    </h1>
+
+                    <p class="mb-4">
+                        Explore our thoughtfully designed furniture collections
+                        created to bring comfort, elegance and style to every space.
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- RIGHT SOFA -->
+            <div class="col-lg-7">
+                <div class="hero-img-wrap"
+                     style="transform: translateY(-80px); pointer-events: none;">
+
+                    <img src="{% static 'images/couch.png' %}"
+                         class="img-fluid"
+                         alt="Furniture Sofa">  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Premium Hero Section -->
+<!-- End Premium Hero Section -->
+<!-- Categories -->
+<section class="category-section">
+
+    <div class="container">
+
+        <div class="category-heading">
+
+            <h3>EXPLORE COLLECTIONS</h3>
+
+            <p>
+                Find the perfect furniture for every room in your home.
+            </p>
+
+        </div>
+
+        <div class="category-grid">
+
+            {% for category in categories %}
+
+            <a href="{% url 'category_products' category.id %}"
+               class="category-card">
+
+                <div class="category-image">
+
+                    <img src="{{ category.image.url }}"
+                         alt="{{ category.name }}">
+
+                </div>
+
+                <div class="category-content">
+
+                    <h3>{{ category.name }}</h3>
+
+                    <span>
+                        Explore Collection →
+                    </span>
+
+                </div>
+
+            </a>
+
+            {% empty %}
+
+            <div class="no-category">
+                <p>No categories available.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+</section>
+
+{% endblock content %}

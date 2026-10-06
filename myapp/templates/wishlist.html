@@ -1,0 +1,119 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% comment %} {% block title %}My Wishlist | Furni{% endblock %} {% endcomment %}
+
+{% block content %}
+
+
+<!-- =========================================
+     WISHLIST HERO SECTION
+========================================= -->
+<section class="wishlist-hero">
+    <div class="wishlist-hero-shape shape-one"></div>
+    <div class="wishlist-hero-shape shape-two"></div>
+
+    <div class="container">
+        <div class="wishlist-hero-content">
+            <span class="wishlist-eyebrow">FURNI COLLECTION</span>
+            <h1>My Wishlist</h1>
+            <div class="wishlist-divider"></div>
+            <p>Save the furniture pieces you love and keep your curated designs ready for your home makeover.</p>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================
+     WISHLIST PRODUCTS SECTION
+========================================= -->
+<section class="wishlist-section">
+    <div class="container">
+
+        {% if products %}
+        <div class="wishlist-top">
+            <div>
+                <span class="wishlist-small-title">SAVED FOR LATER</span>
+                <h2>Your Favourite Pieces</h2>
+            </div>
+
+            <span class="wishlist-count">
+                {{ products|length }} {% if products|length == 1 %}Item{% else %}Items{% endif %}
+            </span>
+        </div>
+
+        <div class="wishlist-grid">
+            {% for product in products %}
+            <div class="wishlist-card">
+                
+                <!-- PRODUCT IMAGE WRAPPER -->
+                <div class="wishlist-image-wrapper">
+                    {% if product.image %}
+                        <a href="{% url 'product' product.id %}">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="wishlist-image">
+                        </a>
+                    {% else %}
+                        <div class="wishlist-no-image">No Image Available</div>
+                    {% endif %}
+
+                    <!-- REMOVE BUTTON (HEART) -->
+                    <a href="{% url 'remove_wishlist' product.id %}" class="remove-wishlist" title="Remove from Wishlist">
+                        <i class="fa-solid fa-heart"></i>
+                    </a>
+                </div>
+
+                <!-- PRODUCT DETAILS -->
+                <div class="wishlist-details">
+                    <h3 class="wishlist-product-name">
+                        <a href="{% url 'product' product.id %}">{{ product.name }}</a>
+                    </h3>
+
+                    <div class="wishlist-price-wrap">
+                        <span class="wishlist-price">₹{{ product.price }}</span>
+                    </div>
+
+                    {% if product.stock > 0 %}
+                        <a href="{% url 'wishlist_add_cart' product.id %}" class="wishlist-cart-btn">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Add to Cart</span>
+                        </a>
+                    {% else %}
+                        <button type="button" class="wishlist-cart-btn disabled" disabled>
+                            <i class="fa-solid fa-ban"></i>
+                            <span>Out of Stock</span>
+                        </button>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- CONTINUE SHOPPING LINK -->
+        <div class="wishlist-footer">
+            <a href="{% url 'category' %}" class="continue-shopping-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Continue Shopping</span>
+            </a>
+        </div>
+
+        {% else %}
+        
+        <!-- EMPTY WISHLIST STATE -->
+        <div class="empty-wishlist">
+            <div class="empty-wishlist-icon">
+                <i class="fa-regular fa-heart"></i>
+            </div>
+            <span class="wishlist-small-title">YOUR SAVED COLLECTION</span>
+            <h2>Your Wishlist is Empty</h2>
+            <p>You haven't saved any furniture yet. Explore our handcrafted collections and save your favorite pieces to access them anytime.</p>
+            <a href="{% url 'category' %}" class="continue-shopping-btn">
+                <span>Explore Furniture</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        {% endif %}
+
+    </div>
+</section>
+{% endblock content %}

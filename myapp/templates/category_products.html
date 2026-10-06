@@ -1,0 +1,673 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- =========================================
+     PREMIUM CATEGORY HERO
+========================================= -->
+
+<section class="premium-category-hero">
+
+    <div class="premium-hero-shape shape-one"></div>
+    <div class="premium-hero-shape shape-two"></div>
+
+    <div class="container">
+
+        <div class="premium-hero-inner">
+
+            <div class="premium-hero-content">
+
+                <span class="premium-eyebrow">
+                    FURNI COLLECTION
+                </span>
+
+                <h1>
+                    {{ category.name }}
+                </h1>
+
+                <div class="premium-hero-divider"></div>
+
+                <p>
+                    Thoughtfully designed furniture that brings
+                    comfort, character and timeless style into your home.
+                </p>
+
+            </div>
+
+
+            <div class="premium-hero-side">
+
+                <span class="hero-number">03</span>
+
+                <span class="hero-side-line"></span>
+
+                <span class="hero-side-text">
+                    QUALITY<br>
+                    COMFORT<br>
+                    STYLE
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     PREMIUM PRODUCT SEARCH
+========================================= -->
+
+<section class="premium-search-section">
+
+    <div class="container">
+
+        <div class="premium-search-area">
+
+            <div class="search-heading">
+
+                <span>
+                    DISCOVER YOUR PIECE
+                </span>
+
+                <h2>
+                    Find something you love.
+                </h2>
+
+            </div>
+
+
+            <div class="premium-search-wrapper">
+
+                <span class="premium-search-icon">
+                    <i class="fa fa-search"></i>
+                </span>
+
+
+                <input
+                    type="text"
+                    id="productSearch"
+                    class="premium-search-input"
+                    placeholder="Search furniture..."
+                    autocomplete="off"
+                >
+
+
+                <button
+                    type="button"
+                    id="clearSearch"
+                    class="premium-search-clear"
+                    style="display: none;"
+                >
+
+                    <i class="fa fa-times"></i>
+
+                </button>
+
+            </div>
+
+
+            <p id="searchResultText"
+               class="premium-search-result">
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     PRODUCTS
+========================================= -->
+
+<div class="untree_co-section product-section before-footer-section">
+
+    <div class="container">
+
+        <div class="row"
+             id="productGrid">
+
+
+            {% for product in products %}
+
+            <!-- PRODUCT -->
+
+            <div class="col-12 col-md-4 col-lg-3 mb-5 product-card-wrapper"
+     data-product-name="{{ product.name|lower }}">
+
+    <div class="product-item">
+
+
+        <!-- =====================================
+             PRODUCT IMAGE
+        ====================================== -->
+
+        <div class="product-image-wrapper">
+
+            <a href="{% url 'product' product.id %}"
+               onclick="openProductPopup(event, this.href);">
+
+                {% if product.image %}
+
+                    <img src="{{ product.image.url }}"
+                         class="img-fluid product-thumbnail"
+                         alt="{{ product.name }}">
+
+                {% else %}
+
+                    <div class="product-no-image">
+                        No Image
+                    </div>
+
+                {% endif %}
+
+            </a>
+
+
+            <!-- =====================================
+                 WISHLIST BUTTON
+            ====================================== -->
+
+            <a href="{% url 'add_wishlist' product.id %}"
+               class="wishlist-btn"
+               title="Add to Wishlist">
+
+                <i class="fa-regular fa-heart"></i>
+
+            </a>
+
+        </div>
+
+
+        <!-- =====================================
+             PRODUCT INFORMATION
+        ====================================== -->
+
+        <a href="{% url 'product' product.id %}"
+           class="product-info-link"
+           onclick="openProductPopup(event, this.href);">
+
+            <h3 class="product-title">
+                {{ product.name }}
+            </h3>
+
+            <strong class="product-price">
+                ₹{{ product.price }}
+            </strong>
+
+        </a>
+
+
+        <!-- =====================================
+             VIEW PRODUCT BUTTON
+        ====================================== -->
+
+        <a href="{% url 'product' product.id %}"
+           class="icon-cross"
+           onclick="openProductPopup(event, this.href);">
+
+            <img src="{% static 'images/cross.svg' %}"
+                 class="img-fluid"
+                 alt="View Product">
+
+        </a>
+
+    </div>
+
+</div>
+            {% empty %}
+
+            <!-- NO PRODUCTS -->
+
+            <div class="col-12 text-center">
+
+                <h3>
+                    No products found in this category.
+                </h3>
+
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+        
+        <!-- =====================================
+             NO SEARCH RESULT
+        ====================================== -->
+
+        <div id="noProductResult"
+             class="no-product-search"
+             style="display: none;">
+
+            <div class="no-product-search-icon">
+
+                <i class="fa fa-search"></i>
+
+            </div>
+
+            <h3>
+                No furniture found
+            </h3>
+
+            <p>
+                Try searching for another furniture product.
+            </p>
+
+        </div>
+       
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     PRODUCT POPUP
+========================================= -->
+
+<div id="productPopup"
+     class="product-popup-overlay"
+     style="display: none;">
+
+    <div id="productPopupContent">
+
+        <!-- product.html will load here -->
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =========================================
+       PRODUCT SEARCH
+    ========================================= */
+
+    const searchInput =
+        document.getElementById("productSearch");
+
+
+    const clearButton =
+        document.getElementById("clearSearch");
+
+
+    const productCards =
+        document.querySelectorAll(".product-card-wrapper");
+
+
+    const noResult =
+        document.getElementById("noProductResult");
+
+
+    const resultText =
+        document.getElementById("searchResultText");
+
+
+
+    /* SAFETY CHECK */
+
+    if (searchInput) {
+
+        searchInput.addEventListener("input", function () {
+
+
+            const searchValue =
+                this.value.toLowerCase().trim();
+
+
+            let visibleCount = 0;
+
+
+            /* =====================================
+               FILTER PRODUCTS
+            ====================================== */
+
+            productCards.forEach(function (card) {
+
+
+                const productName =
+                    card.getAttribute("data-product-name");
+
+
+                if (
+                    productName &&
+                    productName.includes(searchValue)
+                ) {
+
+                    card.style.display = "";
+
+                    visibleCount++;
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+
+
+            /* =====================================
+               CLEAR BUTTON
+            ====================================== */
+
+            if (searchValue.length > 0) {
+
+                clearButton.style.display = "flex";
+
+            } else {
+
+                clearButton.style.display = "none";
+
+            }
+
+
+
+            /* =====================================
+               RESULT TEXT
+            ====================================== */
+
+            if (searchValue.length > 0) {
+
+                resultText.textContent =
+                    visibleCount +
+                    " product" +
+                    (visibleCount !== 1 ? "s" : "") +
+                    " found";
+
+            } else {
+
+                resultText.textContent = "";
+
+            }
+
+
+
+            /* =====================================
+               NO RESULT
+            ====================================== */
+
+            if (
+                searchValue.length > 0 &&
+                visibleCount === 0
+            ) {
+
+                noResult.style.display = "block";
+
+            } else {
+
+                noResult.style.display = "none";
+
+            }
+
+        });
+
+
+        /* =========================================
+           CLEAR SEARCH
+        ========================================= */
+
+        clearButton.addEventListener("click", function () {
+
+
+            searchInput.value = "";
+
+
+            searchInput.dispatchEvent(
+                new Event("input")
+            );
+
+
+            searchInput.focus();
+
+        });
+
+    }
+
+
+
+    /* =========================================
+       PRODUCT POPUP BACKGROUND
+    ========================================= */
+
+    const popup =
+        document.getElementById("productPopup");
+
+
+    if (popup) {
+
+        popup.addEventListener("click", function(event) {
+
+            if (event.target === popup) {
+
+                closeProductPopup();
+
+            }
+
+        });
+
+    }
+
+
+});
+
+
+
+/* =========================================
+   OPEN PRODUCT POPUP
+========================================= */
+
+function openProductPopup(event, url) {
+
+    event.preventDefault();
+
+
+    const popup =
+        document.getElementById("productPopup");
+
+
+    const popupContent =
+        document.getElementById("productPopupContent");
+
+
+    if (!popup || !popupContent) {
+
+        window.location.href = url;
+
+        return;
+
+    }
+
+
+    /* SHOW POPUP */
+
+    popup.style.display = "flex";
+
+
+    /* LOADING */
+
+    popupContent.innerHTML =
+        '<div class="product-popup-box">' +
+        '<p style="text-align:center;">Loading...</p>' +
+        '</div>';
+
+
+    /* LOAD PRODUCT PAGE */
+
+    fetch(url)
+
+        .then(function(response) {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Product could not be loaded"
+                );
+
+            }
+
+            return response.text();
+
+        })
+
+        .then(function(html) {
+
+            popupContent.innerHTML = html;
+
+        })
+
+        .catch(function(error) {
+
+            console.error(error);
+
+
+            popupContent.innerHTML =
+                '<div class="product-popup-box">' +
+                '<p style="text-align:center;">' +
+                'Unable to load product.' +
+                '</p>' +
+                '</div>';
+
+        });
+
+}
+
+
+
+/* =========================================
+   CLOSE POPUP
+========================================= */
+
+function closeProductPopup() {
+
+    const popup =
+        document.getElementById("productPopup");
+
+
+    const popupContent =
+        document.getElementById("productPopupContent");
+
+
+    if (popup) {
+
+        popup.style.display = "none";
+
+    }
+
+
+    if (popupContent) {
+
+        popupContent.innerHTML = "";
+
+    }
+
+}
+
+
+
+/* =========================================
+   ESC KEY
+========================================= */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+
+        closeProductPopup();
+
+    }
+
+});
+
+
+/* =========================================
+   PRODUCT POPUP QUANTITY
+   ========================================= */
+
+function changeProductQuantity(change) {
+
+    const quantityInput = document.getElementById("productQuantity");
+
+    if (!quantityInput) {
+        return;
+    }
+
+    let currentQuantity = parseInt(quantityInput.value);
+
+    if (isNaN(currentQuantity)) {
+        currentQuantity = 1;
+    }
+
+    const maxStock = parseInt(quantityInput.max);
+
+    let newQuantity = currentQuantity + change;
+
+
+    /* Minimum quantity = 1 */
+    if (newQuantity < 1) {
+        newQuantity = 1;
+    }
+
+
+    /* Maximum quantity = available stock */
+    if (!isNaN(maxStock) && newQuantity > maxStock) {
+        newQuantity = maxStock;
+    }
+
+
+    quantityInput.value = newQuantity;
+}
+
+
+/* =========================================
+   MANUAL QUANTITY INPUT
+   ========================================= */
+
+function validateProductQuantity(input, maxStock) {
+
+    let value = parseInt(input.value);
+
+
+    /* Empty / invalid value */
+    if (isNaN(value)) {
+        input.value = 1;
+        return;
+    }
+
+
+    /* Minimum */
+    if (value < 1) {
+        input.value = 1;
+        return;
+    }
+
+
+    /* Maximum */
+    if (value > maxStock) {
+        input.value = maxStock;
+    }
+}
+
+
+</script>
+
+
+{% endblock content %}

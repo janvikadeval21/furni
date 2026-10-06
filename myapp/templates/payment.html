@@ -1,0 +1,110 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Razorpay Payment</title>
+</head>
+ 
+<body>
+ 
+    <h2>Pay ₹500</h2>
+ 
+    <button id="pay-button">
+        Pay Now
+    </button>
+ 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+ 
+    <script>
+ 
+        var options = {
+ 
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ amount }}",
+            "currency": "INR",
+ 
+            "name": "My Ecommerce Store",
+            "description": "Test Payment",
+ 
+            "order_id": "{{ order_id }}",
+ 
+            "handler": function (response) {
+ 
+    console.log("Payment ID:", response.razorpay_payment_id);
+    console.log("Order ID:", response.razorpay_order_id);
+    console.log("Signature:", response.razorpay_signature);
+ 
+ 
+    fetch("/verify-payment/", {
+ 
+        method: "POST",
+ 
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+ 
+        body: JSON.stringify({
+ 
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature
+ 
+        })
+ 
+    })
+ 
+    .then(response => response.json())
+ 
+    .then(data => {
+ 
+        console.log(data);
+ 
+        if (data.status === "success") {
+ 
+            alert("Payment verified successfully!");
+ 
+        } else {
+ 
+            alert("Payment verification failed!");
+ 
+        }
+ 
+    })
+ 
+    .catch(error => {
+ 
+        console.error(error);
+        alert("Something went wrong!");
+ 
+    });
+ 
+},
+ 
+            "prefill": {
+                "name": "Danish",
+                "email": "danishrunza@gmail.com",
+                "contact": "9999999999"
+            },
+ 
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+ 
+ 
+        var rzp1 = new Razorpay(options);
+ 
+ 
+        document.getElementById("pay-button").onclick = function(e) {
+ 
+            rzp1.open();
+ 
+            e.preventDefault();
+ 
+        };
+ 
+    </script>
+ 
+</body>
+</html>
+  {% endcomment %}

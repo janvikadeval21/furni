@@ -1,0 +1,252 @@
+{% extends "main.html" %}
+{% load static %}
+{% block content %}
+<!-- Start Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-lg-5">
+                    <div class="intro-excerpt">
+                        <h1>Services</h1>
+                        <p class="mb-4">Explore our comprehensive home and office styling services, custom furnishing solutions, and seamless delivery options crafted to elevate your space.</p>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="hero-img-wrap" style="transform: translateY(-80px); pointer-events: none;">
+                        <img src="{% static 'images/couch.png' %}" class="img-fluid" alt="Furniture Sofa">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- End Hero Section -->
+
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section">
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                <div class="feature">
+                    <div class="icon">
+                        <img src="{% static 'images/truck.svg' %}" alt="Fast Shipping" class="imf-fluid">
+                    </div>
+                    <h3>Fast &amp; Free Shipping</h3>
+                    <p>Enjoy prompt, tracked doorstep delivery across all standard and bulk furniture orders.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                <div class="feature">
+                    <div class="icon">
+                        <img src="{% static 'images/bag.svg' %}" alt="Easy Shopping" class="imf-fluid">
+                    </div>
+                    <h3>Easy to Shop</h3>
+                    <p>Browse curated designs with precise measurements, fabric specs, and quick checkout.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                <div class="feature">
+                    <div class="icon">
+                        <img src="{% static 'images/support.svg' %}" alt="24/7 Support" class="imf-fluid">
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Our dedicated customer assistance team is available anytime to answer your queries.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                <div class="feature">
+                    <div class="icon">
+                        <img src="{% static 'images/return.svg' %}" alt="Easy Returns" class="imf-fluid">
+                    </div>
+                    <h3>Hassle Free Returns</h3>
+                    <p>Return or exchange eligible items easily if the fit or finish isn't just right.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                <div class="feature">
+                    <div class="icon">
+                        <img src="{% static 'images/truck.svg' %}" alt="Custom Logistics" class="imf-fluid">
+                    </div>
+                    <h3>White-Glove Delivery</h3>
+                    <p>Professional unboxing and room-of-choice placement on select premium furniture sets.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                <div class="feature">
+                    <div class="icon">
+                        <img src="{% static 'images/bag.svg' %}" alt="Interior Styling" class="imf-fluid">
+                    </div>
+                    <h3>Custom Styling</h3>
+                    <p>Work directly with our design consultants to pick complementary palettes and layouts.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                <div class="feature">
+                    <div class="icon">
+                        <img src="{% static 'images/support.svg' %}" alt="Assembly Assistance" class="imf-fluid">
+                    </div>
+                    <h3>Assembly Assistance</h3>
+                    <p>Clear step-by-step guides and on-demand professional setup services upon request.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                <div class="feature">
+                    <div class="icon">
+                        <img src="{% static 'images/return.svg' %}" alt="Warranty Protection" class="imf-fluid">
+                    </div>
+                    <h3>Extended Warranty</h3>
+                    <p>Multi-year protection covering structural timber frames, hardware, and upholstery durability.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Why Choose Us Section -->
+
+<!-- Start Shop By Room Section -->
+<div class="product-section pt-0">
+    <div class="container">
+        <br><br>
+
+        <div class="row mb-5">
+            <div class="col-lg-7 mx-auto text-center">
+                <h2 class="section-title">Shop By Room</h2>
+                <p>
+                    Find beautiful furniture pieces designed to make
+                    every room comfortable, stylish and functional.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- Living Room -->
+            <div class="col-md-4 mb-4">
+                <a href="{% url 'category_products' 1 %}" class="room-card">
+                    <img src="{% static 'images/living-room.jpg' %}"
+                         class="img-fluid"
+                         alt="Living Room Furniture">
+
+                    <div class="room-content">
+                        <h3>Living Room</h3>
+                        <p>Sofas, chairs & coffee tables</p>
+                        <span>Explore Collection &rarr;</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Bedroom -->
+            <div class="col-md-4 mb-4">
+                <a href="{% url 'category_products' 2 %}" class="room-card">
+                    <img src="{% static 'images/bedroom.jpg' %}"
+                         class="img-fluid"
+                         alt="Bedroom Furniture">
+
+                    <div class="room-content">
+                        <h3>Bedroom</h3>
+                        <p>Beds, wardrobes & side tables</p>
+                        <span>Explore Collection &rarr;</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Dining Room -->
+            <div class="col-md-4 mb-4">
+                <a href="{% url 'category_products' 3 %}" class="room-card">
+                    <img src="{% static 'images/dining-room.jpg' %}"
+                         class="img-fluid"
+                         alt="Dining Room Furniture">
+
+                    <div class="room-content">
+                        <h3>Dining Room</h3>
+                        <p>Dining tables & comfortable chairs</p>
+                        <span>Explore Collection &rarr;</span>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Shop By Room Section -->
+
+<!-- Start Testimonial Section (No Photos, Star Rating Added) -->
+<div class="testimonial-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto text-center">
+                <h2 class="section-title">Testimonials</h2>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="testimonial-slider-wrap text-center">
+
+                    <div id="testimonial-nav">
+                        <span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
+                        <span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
+                    </div>
+
+                    <div class="testimonial-slider">
+                        {% for item in testimonials %}
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                            <!-- Gold Star Rating -->
+                            <div class="mb-3 text-warning" style="font-size: 18px; letter-spacing: 2px;">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= item.rating %}
+                                        <i class="fa-solid fa-star"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-star text-muted" style="opacity: 0.4;"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="ms-1 text-dark fw-bold" style="font-size: 14px;"></span>
+                            </div>
+
+                            <!-- Review Message -->
+                            <blockquote class="mb-5">
+                                <p>&ldquo;{{ item.content }}&rdquo;</p>
+                            </blockquote>
+
+                            <!-- Author Info -->
+                            <div class="author-info">
+                                <h3 class="font-weight-bold mb-1" style="font-size: 18px; color: #2f2f2f;">{{ item.name }}</h3>
+                                {% if item.designation %}
+                                    <span class="position d-block mb-3 text-muted" style="font-size: 14px;">{{ item.designation }}</span>
+                                {% endif %}
+                            </div>
+
+                            </div>
+                            </div>
+                            </div>
+                        </div> 
+                        {% empty %}
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <p class="text-muted">No testimonials available at this moment.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Testimonial Section -->
+
+{% endblock content %}
