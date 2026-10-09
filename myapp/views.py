@@ -886,11 +886,6 @@ def chatbot_response(request):
             reply = (
                 "💬 <strong>Chat Freely:</strong><br>"
                 "Feel free to ask any question regarding our products, styles, materials, payments, or delivery!<br><br>"
-                "<em>Try typing:</em><br>"
-                "• <strong>'sofa'</strong> or <strong>'chair'</strong> to browse items<br>"
-                "• <strong>'phone'</strong> or <strong>'call'</strong> for helpline support<br>"
-                "• <strong>'coupon'</strong> to view active discounts<br>"
-                "• <strong>Order ID</strong> (e.g. <code>#19</code>) to track your delivery"
             )
             options = [
                 {"label": "🛍️ Shop by Category", "value": "shop_category"},
@@ -1010,7 +1005,7 @@ def chatbot_response(request):
                     f"Customer: {cust_name}<br>"
                     f"Total: ₹{order.total}<br><br>"
                     f"<a href='/track_order/?order_id={order.id}&email={order.email}' "
-                    f"style='color:#3b5d50; font-weight:700; text-decoration:underline;'>Open Live Tracking Page &rarr;</a>"
+                   
                 )
                 options = [
                     {"label": "📦 Track Order Page", "url": "/track_order/"},
