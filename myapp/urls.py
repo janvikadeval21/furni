@@ -39,5 +39,8 @@ urlpatterns = [
     path("payment/", views.payment_page, name="payment"),
     path("verify-payment/",views.verify_payment_view,name="verify_payment"),
     path('api/chatbot/', views.chatbot_response, name='chatbot_response'),
+    path('apply_coupon/',views.apply_coupon,name='apply_coupon'),
+    path('remove_coupon/',views.remove_coupon,name='remove_coupon'),
+    path('subscribe-newsletter/', views.subscribe_newsletter, name='subscribe_newsletter'),
 ]
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f5; margin: 0; padding: 20px; }
+        .email-container { max-width: 580px; margin: 0 auto; background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+        .header { background-color: #3b5d50; padding: 35px 25px; text-align: center; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 28px; }
+        .header span { color: #f9bf29; }
+        .content { padding: 30px 30px 40px; color: #495057; line-height: 1.7; font-size: 15px; }
+        .coupon-box { background: #fffdf5; border: 2px dashed #f9bf29; border-radius: 12px; padding: 22px; text-align: center; margin: 25px 0; }
+        .badge { background: #f9bf29; color: #27211b; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-block; margin-bottom: 8px; }
+        .code { font-size: 28px; font-weight: 800; color: #3b5d50; letter-spacing: 2px; }
+        .cta-btn { display: inline-block; background-color: #3b5d50; color: #ffffff !important; padding: 12px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 15px; }
+        .footer { text-align: center; font-size: 12px; color: #999; padding: 20px; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Furni<span>.</span></h1>
+        </div>
+        <div class="content">
+            <h2 style="color: #27211b; margin-top: 0;">Special Offer Just For You, {{ name }}! 🎉</h2>
+            <p>We are excited to share a brand new promotional offer on our premium sofa sets, chairs, and home decor items!</p>
+            
+            <div class="coupon-box">
+                <span class="badge">LIMITED TIME SALE</span>
+                <div class="code">{{ coupon.code }}</div>
+                <p style="margin: 8px 0 0; font-size: 16px; color: #27211b; font-weight: 600;">
+                    {% if coupon.discount_type == 'Flat' %}
+                        Flat ₹{{ coupon.discount_value }} OFF
+                    {% else %}
+                        {{ coupon.discount_value }}% OFF
+                    {% endif %}
+                </p>
+                {% if coupon.min_amount > 0 %}
+                    <small style="color: #777;">Applicable on minimum orders above ₹{{ coupon.min_amount }}</small>
+                {% endif %}
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{{ site_url }}/category/" class="cta-btn">Claim Discount &amp; Shop Now &rarr;</a>
+            </div>
+        </div>
+        <div class="footer">
+            Furni Studio, Ahmedabad, Gujarat.<br>
+            You received this VIP notification as a Furni subscriber.
+        </div>
+    </div>
+</body>
+</html>

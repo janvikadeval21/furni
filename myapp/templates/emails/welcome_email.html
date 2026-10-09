@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f5; margin: 0; padding: 20px; }
+        .email-container { max-width: 580px; margin: 0 auto; background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+        .header { background-color: #3b5d50; padding: 35px 25px; text-align: center; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 28px; letter-spacing: -0.5px; }
+        .header span { color: #f9bf29; }
+        .content { padding: 30px 30px 40px; color: #495057; line-height: 1.7; font-size: 15px; }
+        .coupon-card { background: #faf8f5; border: 2px dashed #3b5d50; border-radius: 12px; padding: 20px; text-align: center; margin: 25px 0; }
+        .coupon-code { font-size: 26px; font-weight: 800; color: #3b5d50; letter-spacing: 2px; }
+        .cta-btn { display: inline-block; background-color: #3b5d50; color: #ffffff !important; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 15px; }
+        .footer { text-align: center; font-size: 12px; color: #999; padding: 20px; border-top: 1px solid #eee; }
+    </style>
 </head>
 <body>
- 
-    <h2>Welcome to My Store, {{ name }}!</h2>
- 
-    <p>Your account has been created successfully.</p>
- 
-    <p>Thank you for joining us.</p>
- 
-    <p>
-        Regards,<br>
-        My Store Team
-    </p>
- 
+    <div class="email-container">
+        <div class="header">
+            <h1>Furni<span>.</span></h1>
+        </div>
+        <div class="content">
+            <h2 style="color: #27211b; margin-top: 0;">Welcome to the Family, {{ name }}! 🛋️</h2>
+            <p>Thank you for subscribing to the Furni newsletter. We craft modern, durable furniture designed to bring warmth and elegance to your living space.</p>
+            
+            <div class="coupon-card">
+                <span style="font-size: 13px; color: #888; text-transform: uppercase; font-weight: 700;">Your Welcome Gift</span>
+                <div class="coupon-code">WELCOME10</div>
+                <p style="margin: 8px 0 0; font-size: 14px; color: #555;">Get <strong>10% OFF</strong> on your first furniture order!</p>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{{ site_url }}/category/" class="cta-btn">Start Exploring Furniture &rarr;</a>
+            </div>
+        </div>
+        <div class="footer">
+            104, Furni Craft Studio, Near S.G. Highway, Ahmedabad, Gujarat - 380054<br>
+            You received this because you subscribed to Furni updates.
+        </div>
+    </div>
 </body>
 </html>

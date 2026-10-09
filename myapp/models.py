@@ -118,13 +118,12 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.product.name} x {self.quantity}"
 
-
 class Coupon(models.Model):
     DISCOUNT_TYPE_CHOICES = (
         ('Percentage', 'Percentage (%)'),
         ('Flat', 'Flat Amount (₹)'),
     )
-
+    
     code = models.CharField(max_length=50, unique=True, help_text="e.g. FURNI500 or FESTIVE20")
     discount_type = models.CharField(
         max_length=20, 
@@ -173,3 +172,20 @@ class Coupon(models.Model):
 
      
         return min(discount, cart_total)
+
+class NewsletterSubscriber(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.email}"
+
+
+class CouponUsage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='coupon_usages')
+    coupon = models.ForeignKey('Coupon', on_delete=models.CASCADE)
+    used_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} used {self.coupon.code}"
